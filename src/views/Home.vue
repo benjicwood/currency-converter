@@ -1,7 +1,7 @@
 <template>
   <div class="home">
 
-    <input type="text" v-model="$store.state.selectedCurrencyValue" @change="onChangeSelectedCurrencyValue($event)">
+    <input type="number" v-model="$store.state.selectedCurrencyValue" @change="onChangeSelectedCurrencyValue($event)">
 
     <select @change="onChangeSelectedCurrency($event)">
       <option selected>{{ selectedCurrency.name }}</option>
@@ -10,7 +10,7 @@
 
     <p>=</p>
 
-    <input type="text" v-model="$store.state.comparedCurrencyValue" @change="onChangeComparedCurrencyValue($event)">
+    <input type="number" v-model="$store.state.comparedCurrencyValue" @change="onChangeComparedCurrencyValue($event)">
     
     <select @change="onChangeComparedCurrency($event)">
       <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
   name: 'Home',
@@ -43,23 +42,28 @@ export default {
       this.selectedCurrency.name = this.$store.state.selectedCurrencyExchangeRates[event.target.value.toLowerCase()].name
 
       this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code)
+      this.$store.dispatch('History/addConversionToHistory', this.$store.state)
     },
 
     onChangeSelectedCurrencyValue(event) {
       this.$store.dispatch('setSelectedCurrencyValue', event.target.value)
+      this.$store.dispatch('History/addConversionToHistory', this.$store.state)
     },
 
     onChangeComparedCurrency(event) {
       let currencyCode = event.target.value.toLowerCase()
       this.$store.dispatch('setComparedCurrency', currencyCode)
+      this.$store.dispatch('History/addConversionToHistory', this.$store.state)
     },
 
     onChangeComparedCurrencyValue(event) {
       this.$store.dispatch('setComparedCurrencyValue', event.target.value)
+      this.$store.dispatch('History/addConversionToHistory', this.$store.state)
     },
 
   },
   mounted() {
+    // get and initial values
     this.getSelectedCurrencyExchangeRates()
   }
 
@@ -67,8 +71,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-input {
+@mixin border {
+  border: 2px solid #2c3e50;
+  border-radius: 4px;
+}
+
+input[type=number] {
+  @include border;
   width: 100px;
+  height: 25px;
   margin-right: 10px;
 }
+
+select {
+  @include border;
+  height: 32px;
+  width: 300px;
+}
+
+
 </style>
