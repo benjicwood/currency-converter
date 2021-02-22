@@ -7,8 +7,8 @@
                 <option v-for="(currency, idx) in $store.state.allCurrencies" :key="idx" :value="currency">{{currency}}</option>
               </select> -->
               <select @change="onChangeComparedCurrency($event)">
-                <option value="selectedCurrency">{{selectedCurrency}}</option>
-                <option v-for="(currency, index) in $store.state.currencyList" :key="index" :value="currency">{{currency}}</option>
+                <!-- <option value="selectedCurrency">{{selectedCurrency}}</option> -->
+                <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
               </select>
   </div>
 </template>
@@ -31,12 +31,9 @@ export default {
     onChangeSelectedCurrencyValue(event) {
       this.selectedCurrencyValue = event.target.value;
     },
-    // getCurrencyList() {
-
-    // },
     onChangeComparedCurrency(event) {
-      console.log(event.target.value)
-      this.$store.dispatch('setComparedCurrency', event.target.value)
+      let currencyCode = event.target.value.toLowerCase()
+      this.$store.dispatch('setComparedCurrency', currencyCode)
     }
   },
   mounted() {
