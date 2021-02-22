@@ -1,15 +1,21 @@
 <template>
   <div class="home">
-      <p>{{ selectedCurrencyValue }} {{ selectedCurrency }}</p>
-      <p v-if="$store.state.comparedCurrency"> equals {{ ($store.state.comparedCurrency.rate * selectedCurrencyValue).toFixed(2) }} {{ $store.state.comparedCurrency.name }}</p>
-          <input type="text" v-model="selectedCurrencyValue" @change="onChangeSelectedCurrencyValue($event)">
-              <!-- <select v-model="selectedCurrency" @change="onChangeCurrency($event)">
-                <option v-for="(currency, idx) in $store.state.allCurrencies" :key="idx" :value="currency">{{currency}}</option>
-              </select> -->
-              <select @change="onChangeComparedCurrency($event)">
-                <!-- <option value="selectedCurrency">{{selectedCurrency}}</option> -->
-                <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
-              </select>
+
+    <input type="text" v-model="$store.state.selectedCurrencyValue" @change="onChangeSelectedCurrencyValue($event)">
+
+    <select @change="onChangeSelectedCurrency($event)">
+      <option selected>{{ selectedCurrency.name }}</option>
+      <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
+    </select>
+
+    <p>=</p>
+
+    <input type="text" v-model="$store.state.comparedCurrencyValue" @change="onChangeComparedCurrencyValue($event)">
+    
+    <select @change="onChangeComparedCurrency($event)">
+      <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
+    </select>
+
   </div>
 </template>
 
@@ -20,21 +26,38 @@ export default {
   name: 'Home',
   data() {
     return {
-      selectedCurrency: 'gbp',
-      selectedCurrencyValue: 1,
+      selectedCurrency: {
+        code: 'gbp',
+        name: 'U.K. Pound Sterling',
+      },
+      comparedCurency: 'usd',
     }
   },
   methods: {
     getSelectedCurrencyExchangeRates() {
-      this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency)
+      this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code)
     },
+
+    onChangeSelectedCurrency(event) {
+      this.selectedCurrency.code = event.target.value
+      this.selectedCurrency.name = this.$store.state.selectedCurrencyExchangeRates[event.target.value.toLowerCase()].name
+
+      this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code)
+    },
+
     onChangeSelectedCurrencyValue(event) {
-      this.selectedCurrencyValue = event.target.value;
+      this.$store.dispatch('setSelectedCurrencyValue', event.target.value)
     },
+
     onChangeComparedCurrency(event) {
       let currencyCode = event.target.value.toLowerCase()
       this.$store.dispatch('setComparedCurrency', currencyCode)
-    }
+    },
+
+    onChangeComparedCurrencyValue(event) {
+      this.$store.dispatch('setComparedCurrencyValue', event.target.value)
+    },
+
   },
   mounted() {
     this.getSelectedCurrencyExchangeRates()
@@ -45,7 +68,7 @@ export default {
 
 <style lang="scss" scoped>
 input {
-  width: 40px;
+  width: 100px;
   margin-right: 10px;
 }
 </style>
