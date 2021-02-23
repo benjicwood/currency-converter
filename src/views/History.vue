@@ -30,16 +30,17 @@ export default {
   },
   methods: {
     sortBySourceCurrency() {
-      this.conversions.sort((a, b) => (a.selectedCurrency > b.selectedCurrency) ? 1 : -1 )
+      this.conversions.sort((a, b) => (a.selectedCurrency > b.selectedCurrency) ? 1 : -1)
     },
     sortByTargetCurrency() {
-      this.conversions.sort((a, b) => (a.comparedCurrency > b.comparedCurrency) ? 1 : -1 )
+      this.conversions.sort((a, b) => (a.comparedCurrency > b.comparedCurrency) ? 1 : -1)
     },
     sortByAmountToBeConverted() {
-      this.conversions.sort((a, b) => (a.selectedCurrencyValue > b.selectedCurrencyValue) ? 1 : -1 )
+      this.conversions.sort((a, b) => b.selectedCurrencyValue - a.selectedCurrencyValue)
+
     },
     sortByConvertedAmount() {
-      this.conversions.sort((a, b) => (a.comparedCurrencyValue > b.comparedCurrencyValue) ? 1 : -1 )
+      this.conversions.sort((a, b) => b.comparedCurrencyValue - a.comparedCurrencyValue)
     },
   }
 };
@@ -69,5 +70,9 @@ export default {
     &-header {
       margin-bottom: 0;
     }
+}
+
+.selected-sort-type {
+  font-weight: 600;
 }
 </style>
