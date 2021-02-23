@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      // set initial value - code is used to make the API call, name is for the dropdown display
       selectedCurrency: {
         code: 'GBP',
         name: 'U.K. Pound Sterling',
@@ -45,6 +46,7 @@ export default {
       this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code.toLowerCase())
     },
 
+    // handle selected/base currency changes
     onChangeSelectedCurrency(event) {
       this.selectedCurrency.code = event.target.value
       this.selectedCurrency.name = this.$store.state.selectedCurrencyExchangeRates[event.target.value.toLowerCase()].name
@@ -58,6 +60,7 @@ export default {
       this.$store.dispatch('History/addConversionToHistory', this.$store.state)
     },
 
+    // handle compared currency changes
     onChangeComparedCurrency(event) {
       let currencyCode = event.target.value.toLowerCase()
       this.$store.dispatch('setComparedCurrency', currencyCode)
