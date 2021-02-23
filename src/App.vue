@@ -19,12 +19,15 @@ export default {
 </script>
 
 <style lang="scss">
+$vue-dark: #2c3e50;
+$vue-light: #42b983;
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $vue-dark;
 }
 
 #nav {
@@ -33,10 +36,10 @@ export default {
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: $vue-dark;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: $vue-light;
 }
 </style>
