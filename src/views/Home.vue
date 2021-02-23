@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       selectedCurrency: {
-        code: 'gbp',
+        code: 'GBP',
         name: 'U.K. Pound Sterling',
       },
       comparedCurency: 'usd',
@@ -63,7 +63,7 @@ export default {
 
   },
   mounted() {
-    // get and initial values
+    // get and set initial values
     this.getSelectedCurrencyExchangeRates()
   }
 
