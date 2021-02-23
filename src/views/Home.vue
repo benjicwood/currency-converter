@@ -1,4 +1,5 @@
 <template>
+
   <div class="home">
 
     <input type="number" v-model="$store.state.selectedCurrencyValue" @change="onChangeSelectedCurrencyValue($event)">
@@ -8,7 +9,10 @@
       <option v-for="(currency, index) in $store.state.selectedCurrencyExchangeRates" :key="index" :value="currency.code">{{currency.name}}</option>
     </select>
 
-    <p>=</p>
+    <div>
+      <Spinner v-if="!$store.state.selectedCurrency || !$store.state.comparedCurrency" />
+      <p v-else>=</p>
+    </div>
 
     <input type="number" v-model="$store.state.comparedCurrencyValue" @change="onChangeComparedCurrencyValue($event)">
     
@@ -20,9 +24,13 @@
 </template>
 
 <script>
+import Spinner from '@/components/Spinner'
 
 export default {
   name: 'Home',
+  components: {
+    Spinner
+  },
   data() {
     return {
       selectedCurrency: {
