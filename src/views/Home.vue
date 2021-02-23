@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getSelectedCurrencyExchangeRates() {
-      this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code)
+      this.$store.dispatch('getSelectedCurrencyExchangeRates', this.selectedCurrency.code.toLowerCase())
     },
 
     onChangeSelectedCurrency(event) {
